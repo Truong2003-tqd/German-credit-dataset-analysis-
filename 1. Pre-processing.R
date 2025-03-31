@@ -92,11 +92,6 @@ df <- df %>%
 df <- df %>% 
   select(id, age, age_cat, duration, duration_cat, credit_amount, credit_cat, everything()) 
 
-#Replace the missing value by kNN method (job and housing as,numeric to conduct kNN)
-df1 <- df %>% 
-  kNN(variable = c("saving_accounts", "checking_account"),
-      k = 7)
-
 #Skim through the data after processing
 skim(df1)
 
