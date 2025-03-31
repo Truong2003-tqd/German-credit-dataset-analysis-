@@ -29,7 +29,7 @@ df2$purpose <- as.numeric(factor(df2$purpose))
            tl.srt = 30) 
   mtext("Correlation Matrix of Variables", 
         side = 3,                   # Position: Top (1 - bottom, 2 - left, 3 - top, 4 - right)
-        line = -2,                  # Adjust vertical position
+        line = -4,                  # Adjust vertical position
         col = "#1B5B78",            # Title color
         cex = 1.5,                  # Title size
         font = 2)                   # Bold font
