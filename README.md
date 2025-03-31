@@ -126,6 +126,12 @@ df <- df %>%
 df <- df %>% 
   select(id, age, age_cat, duration, duration_cat, credit_amount, credit_cat, everything())
 ```
+The table below describe the new columns after processing
+| **Variable**       | **Data Type** | **Categories**                                                                                                             |
+|---------------------|--------------|--------------------------------------------------------------------------------------------------------------------------|
+| **Age_cat**         | Factor       | Student [18, 24], Young (24, 34], Adult (34, 59], Senior (59, 100]                                                         |
+| **Duration_cat**    | Factor       | Short Term [6, 12], Medium Term (12, 36], Long Term (36 and above)                                                        |
+| **Credit_cat**      | Factor       | Low [250, 1366], Moderate (1366, 2320], Quite High (2320, 3972], High (3972, 18424]                                        |
 
 ### Data Cleaning
 **1. Skim through the data**
@@ -171,7 +177,58 @@ The data has 183 and 394 missing values in saving_account and checking_account, 
 **2. Handle missing value** 
 Figure illustrates the distribution of missing and non-missing data points by credit categories across duration, age, job and housing categories. The missingness is MCAR because there is no noticeable pattern across the variables. Consequently, instead of introducing an “unknown” category that contributes limited insights to the analysis, k-nearest-neighbors (kNN) imputation is chosen. The kNN imputer estimates the missing values by referencing k most similar data points, then imputing the most frequent value among neighbors to the categorical variables. 
 ```r
- 
+#Replace the missing value by kNN method 
+df1 <- df %>% 
+  kNN(variable = c("saving_accounts", "checking_account"),
+      k = 7)
+
+#Skim through the data after processing
+skim(df1)
+```
+```r
+── Data Summary ────────────────────────
+                           Values
+Name                       df1   
+Number of rows             1000  
+Number of columns          15    
+_______________________          
+Column type frequency:           
+  factor                   9     
+  logical                  2     
+  numeric                  4     
+________________________         
+Group variables            None  
+
+── Variable type: factor ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  skim_variable    n_missing complete_rate ordered n_unique top_counts                            
+1 age_cat                  0             1 FALSE          4 adu: 401, you: 399, stu: 149, sen: 51 
+2 duration_cat             0             1 FALSE          3 med: 554, sho: 359, lon: 87           
+3 credit_cat               0             1 FALSE          4 low: 251, mod: 250, hig: 250, qui: 249
+4 sex                      0             1 FALSE          2 mal: 690, fem: 310                    
+5 job                      0             1 FALSE          4 2: 630, 1: 200, 3: 148, 0: 22         
+6 housing                  0             1 FALSE          3 own: 713, ren: 179, fre: 108          
+7 saving_accounts          0             1 FALSE          4 lit: 779, mod: 105, qui: 67, ric: 49  
+8 checking_account         0             1 FALSE          3 lit: 492, mod: 435, ric: 73           
+9 purpose                  0             1 FALSE          8 car: 337, rad: 280, fur: 181, bus: 97 
+
+── Variable type: logical ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  skim_variable        n_missing complete_rate  mean count             
+1 saving_accounts_imp          0             1 0.183 FAL: 817, TRU: 183
+2 checking_account_imp         0             1 0.394 FAL: 606, TRU: 394
+
+── Variable type: numeric ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  skim_variable n_missing complete_rate   mean     sd  p0   p25   p50   p75  p100 hist 
+1 id                    0             1  500.   289.    1  251.  500.  750.  1000 ▇▇▇▇▇
+2 age                   0             1   35.5   11.4  19   27    33    42     75 ▇▆▃▁▁
+3 duration              0             1   20.9   12.1   4   12    18    24     72 ▇▇▂▁▁
+4 credit_amount         0             1 3271.  2823.  250 1366. 2320. 3972. 18424 ▇▂▁▁▁
+```
+The result returns no missing value after processing. Further, the bar graph of checking and saving accounts before and after the imputation shows insignificant interquartile and mean changes, though outlier concentration slightly increases. 
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/15642f0b-1144-4355-b0bf-d895401a64c5" alt="Credit Category Distribution" width="600">
+</p>
+
+
 
 
 
