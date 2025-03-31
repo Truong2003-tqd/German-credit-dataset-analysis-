@@ -1,2 +1,2 @@
-# German-credit-dataset-analysis-
-The analysis is conducted by using the modified version of German credit dataset. This dataset has 10 variables and 1000 rows.
+# Overview
+Welcome to my analysis of German Credit dataset, which sourced from [Kaggle - German Credit Risk] (https://www.kaggle.com/datasets/uciml/german-credit), containing customers' information on age, duration, credit amount, checking and savings account statuses, job and housing status, and purposes. This analysis involves data wrangling, mining, and visualization using the R programming language. The variables are analyzed to determine the bank's lending strategy and the portfolio risk profile, and to detect any unusual patterns that may result from financial fraud.  
