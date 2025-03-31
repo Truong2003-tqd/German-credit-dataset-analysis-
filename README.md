@@ -40,6 +40,12 @@ library(ggplot2)
 German_Credit_Dataset <- read_csv("German Credit Dataset.csv", 
                                       na = "NA")
 ```
-
+3. Create a datafram for the analysis
+```
+df <- German_Credit_Dataset %>% 
+  unique()
+```
+### Skim through the data
+1. 
 
 
