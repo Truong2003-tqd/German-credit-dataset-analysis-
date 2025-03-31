@@ -20,5 +20,26 @@ Rstudio is the backbone of my analysis. I used following packages to analyze the
 # Data Preparation and Wrangling
 This section outline steps taken to prepare and clean the data to ensure high accuracy and usability
 ## Import & Clean Up Data
+I start by importing need packages and loading the csv dataset file, followed by detecting and handling missing values and outliers. 
+### Import packages and load the data
+1. Import packages
+```
+library(readr)
+library(tidyverse)
+library(naniar)
+library(gtExtras)
+library(patchwork)
+library(gridExtra)
+library(skimr)
+library(VIM)
+library(corrplot)
+library(ggplot2)
+```
+2. Load the data
+```
+German_Credit_Dataset <- read_csv("German Credit Dataset.csv", 
+                                      na = "NA")
+```
+
 
 
