@@ -22,8 +22,9 @@ This section outline steps taken to prepare and clean the data to ensure high ac
 ## Import & Clean Up Data
 I start by importing need packages and loading the csv dataset file, followed by detecting and handling missing values and outliers. 
 ### Import packages and load the data
-1. Import packages
-```
+**1. Import packages**
+```r
+#Import packages
 library(readr)
 library(tidyverse)
 library(naniar)
@@ -35,17 +36,19 @@ library(VIM)
 library(corrplot)
 library(ggplot2)
 ```
-2. Load the data
-```
+**2. Load the data**
+```r
+#Load the data
 German_Credit_Dataset <- read_csv("German Credit Dataset.csv", 
                                       na = "NA")
 ```
-3. Create a datafram for the analysis
-```
+**3. Create a dataframe for the analysis**
+```r
+#Create a new dataframe 
 df <- German_Credit_Dataset %>% 
   unique()
 ```
-4. Summary table of variables
+**4. Summary table of variables**
 
 | Variable         | Data Type | Description                                                                                   |
 |----------------------|--------------|-----------------------------------------------------------------------------------------------|
@@ -60,13 +63,76 @@ df <- German_Credit_Dataset %>%
 | duration             | Numeric      | Loan term (months)                                                                          |
 | purpose              | Character    | Radio/TV, Education, Furniture/Equipment, Car, Business, Domestic Appliances, Repairs, Vacation/Others |
 
+The table describes the original meaning and data type of each variable.
+**5. Convert categorical variables to factor data type**
+```r
+#Convert into categorical variables
+df$sex <- factor(df$sex, levels = c("male", "female"))
+df$job <- as.factor(df$job)
+df$housing <- factor(df$housing, levels = c("own", "rent","free"))
+df$saving_accounts <- factor(df$saving_accounts, levels = c("little","moderate","quite rich","rich"))
+df$checking_account <- factor(df$checking_account, levels = c("little","moderate","rich"))
+df$purpose <- as.factor(df$purpose)
+```
+Check the dataset after changes
+```r
+#Check the data type
+glimpse(df, width = 1)
+```
+```r
+Rows: 1,000
+Columns: 13
+$ id               <dbl> …
+$ age              <dbl> …
+$ age_cat          <fct> …
+$ duration         <dbl> …
+$ duration_cat     <fct> …
+$ credit_amount    <dbl> …
+$ credit_cat       <fct> …
+$ sex              <fct> …
+$ job              <fct> …
+$ housing          <fct> …
+$ saving_accounts  <fct> …
+$ checking_account <fct> …
+$ purpose          <fct> …
+```
+**6. Group age, duration and credit_amount observations to new caterogry**
+```r
+#Create age category 
+age_interval <- c(18,24,34,59,100) #Create age intervals
+age_labels <- c("student", "young", "adult", "senior") #Create age labels
+
+#Create age_cat column
+df <- df %>% 
+  mutate(age_cat = cut(age, breaks = age_interval, labels = age_labels, right = TRUE)) 
+
+#Create duration category
+duration_interval <- c(0,12,36, Inf) #Create duration intervals
+duration_labels <- c("short term", "medium term", "long term") #Create duration labels
+
+#Create duration_cat column
+df <- df %>% 
+  mutate(duration_cat = cut(duration, breaks = duration_interval, labels = duration_labels, right = TRUE)) 
+
+#Create category for credit amount by using percentiles (25, 50, 75)
+credit_interval <- c(0,1366,2320,3972,Inf) #Create credit_amount intervals
+credit_labels <-  c("low", "moderate", "quite high", "high")#Create credit_amount labels
+
+#Create credit_cat column
+df <- df %>% 
+  mutate(credit_cat = cut(credit_amount, breaks = credit_interval, labels = credit_labels, right = TRUE)) 
+
+#Rearrange column
+df <- df %>% 
+  select(id, age, age_cat, duration, duration_cat, credit_amount, credit_cat, everything())
+```
 
 ### Data Cleaning
-1. Skim through the data
+**1. Skim through the data**
 ```
 skim(German_Credit_Dataset)
 ```
-```
+```r
 ── Data Summary ────────────────────────
                            Values               
 Name                       German_Credit_Dataset
@@ -101,6 +167,11 @@ The data has 183 and 394 missing values in saving_account and checking_account, 
 | **Missing Completely at Random (MCAR)** | The missingness occurs at random, and its pattern cannot be explained by observed or unobserved data points.             |
 | **Missing at Random (MAR)**            | The missingness occurs at random, but its pattern can be explained by other observed data points.                         |
 | **Missing Not at Random (MNAR)**       | The missingness is neither MCAR nor MAR; its reasons are directly related to the missing value itself.                   |
+
+**2. Handle missing value** 
+Figure illustrates the distribution of missing and non-missing data points by credit categories across duration, age, job and housing categories. The missingness is MCAR because there is no noticeable pattern across the variables. Consequently, instead of introducing an “unknown” category that contributes limited insights to the analysis, k-nearest-neighbors (kNN) imputation is chosen. The kNN imputer estimates the missing values by referencing k most similar data points, then imputing the most frequent value among neighbors to the categorical variables. 
+```r
+ 
 
 
 
