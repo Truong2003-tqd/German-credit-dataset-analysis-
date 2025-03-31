@@ -1,3 +1,13 @@
+#Data frame for correlation analysis
+{
+df2 <- df1
+df2$sex <- as.numeric(factor(df2$sex))
+df2$job <- as.numeric(factor(df2$job))
+df2$housing <- as.numeric(factor(df2$housing))
+df2$saving_accounts <- as.numeric(factor(df2$saving_accounts))
+df2$checking_account <- as.numeric(factor(df2$checking_account))
+df2$purpose <- as.numeric(factor(df2$purpose))
+}
 #Correlation Matrix of Variables
 #Create correlation table
 {
