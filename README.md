@@ -1,11 +1,13 @@
 # Overview
 Welcome to my analysis of German Credit dataset, which sourced from [Kaggle - German Credit Risk](https://www.kaggle.com/datasets/uciml/german-credit), containing customers' information on age, duration, credit amount, checking and savings account statuses, job and housing status, and purposes. This analysis involves data wrangling, mining, and visualization using the R programming language. The variables are analyzed to determine the bank's lending strategy and the portfolio risk profile, and to detect any unusual patterns that may result from financial fraud.  
+
 # The Questions
 Below are questions I want to answer in my project:
 1. What are the relationships between variables?
 2. What are the primary customers of this banks?
 3. What are the overall risk profile of the loan portfolio?
 4. Are there any ususual partterns in the data? What are the root causes?
+
 # Tools I Used
 Rstudio is the backbone of my analysis. I used following packages to analyze the data:
 1. tidyverse: A collection of R packages for data manipulation, visualization, and analysis (e.g., dplyr, ggplot2).
@@ -17,10 +19,13 @@ Rstudio is the backbone of my analysis. I used following packages to analyze the
 7. VIM: Visualizes and imputes missing values for multivariate data.
 8. corrplot: Visualizes correlation matrices using colorful and informative plots.
 9. ggplot2: Creates customizable and elegant data visualizations.
+
 # Data Preparation and Wrangling
 This section outline steps taken to prepare and clean the data to ensure high accuracy and usability
+
 ## Import & Clean Up Data
 I start by importing need packages and loading the csv dataset file, followed by detecting and handling missing values and outliers. 
+
 ### Import packages and load the data
 **1. Import packages**
 ```r
@@ -42,12 +47,14 @@ library(ggplot2)
 German_Credit_Dataset <- read_csv("German Credit Dataset.csv", 
                                       na = "NA")
 ```
+
 **3. Create a dataframe for the analysis**
 ```r
 #Create a new dataframe 
 df <- German_Credit_Dataset %>% 
   unique()
 ```
+
 **4. Summary table of variables**
 
 | Variable         | Data Type | Description                                                                                   |
@@ -64,6 +71,7 @@ df <- German_Credit_Dataset %>%
 | purpose              | Character    | Radio/TV, Education, Furniture/Equipment, Car, Business, Domestic Appliances, Repairs, Vacation/Others |
 
 The table describes the original meaning and data type of each variable.
+
 **5. Convert categorical variables to factor data type**
 ```r
 #Convert into categorical variables
@@ -227,6 +235,109 @@ The result returns no missing value after processing. Further, the bar graph of 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/15642f0b-1144-4355-b0bf-d895401a64c5" alt="Credit Category Distribution" width="600">
 </p>
+
+**3. Handle outliers**
+Due to the left-skewed distributions of credit amount, duration and age, using the boxplot is the best way to detect outliers.
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/d6f1edea-4683-47f9-8e8f-b4e5c6dd21f0" alt="Credit Category Distribution" width="600">
+</p
+  
+In R, the boxplot determines lower and upper bounds for the dataset by using equations 1 and 2. 
+(1) Lower bound=Q1-1.5*IQR 
+(2) Upper bound=Q3+1.5*IQR 
+Because the outliers are natural, retaining them is the best strategy to explain the unusual patterns. Overall loan risk, the bank’s policy and customers’ profile are explored by analyzing these outliers. Other methods, such as removal or winsorization, replacing outliers with less extreme values, will unnecessarily distort the original meaning of the dataset. 
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/2329a892-cafa-4f1d-abc1-e4c0ce3dcaeb" alt="Centered Image">
+</p>
+
+# Data Exploration
+Banks assess risk profile using financial health, cash flow stability and mortgage assets. In the context of this dataset, financial health can be assessed by checking and savings account balances; high balances may indicate stronger financial health. Next, cash flow stability and mortgage assets are assessed through job and housing variables. The highly skilled workers are paid higher salaries, indicating better financial stability. Further, house ownership serves as a tangible collateral asset, reducing the loan risk. Regarding observations of the housing variable, customers with the “own” status seemly have the lowest risk. 
+
+## Correlation Coefficients
+Correlation coefficients are useful for demonstrating the relationship between variables. Therefore, it is suitable to select the most important variables to dive deeper into the dataset. Figure indicates a moderate to strong positive relationship (0.62) between credit amount and duration. The coefficient is statistically significant because of a p-value < 0.05 and a t-value > 1.96 (Appendix). Therefore, the duration category is selected to demonstrate the distribution and explore the profile of outliers. The correlation matrix also highlights noticeable positive relationships between credit amount, duration, job, and housing, which are also statistically significant. Although the correlation coefficient is quite low, it implies that the bank offered longer-term, higher-value loans to skilled customers
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/598309ef-ffbe-4184-9299-67019a37a383" alt="Centered Image">
+</p>
+  
+| Variables                  | t-value | p-value | Correlation (r) |
+|----------------------------|---------|---------|------------------|
+| credit_amount vs duration  | 25.29   | < 0.01  | 0.62             |
+| credit_amount vs job       | 9.41    | < 0.01  | 0.29             |
+| credit_amount vs housing   | 5.50    | 0.00    | 0.17             |
+| duration vs job            | 6.82    | 0.00    | 0.21             |
+| duration vs housing        | 4.38    | 0.00    | 0.14             |
+
+**Table.** Table of correlation test of each variable
+
+## Relationship with duration 
+The ascending mean values confirm the positive relationship between credit amount and duration. However, outliers cluster in short and medium-term loans, with only one in the long-term category. There are 2 possible scenarios explaining the distribution: 
+1) The outliers are fraudulent loans because they are significantly different from other customers.
+2) These customers have a lower risk profile, proven by stable income and valuable collateral assets
+Further analysis is conducted to determine the outliers’ profiles and the loan purposes to assess the overall risk of this portfolio.
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/e2482471-92b2-4b79-b7c7-31e311a92590" alt="Centered Image">
+</p>
+
+## Relationship with checking and savings accounts
+The figure highlights that most customers have low savings and checking balances. Further, outliers are distributed primarily among these groups. Low balances may imply weak financial health, posing potential repayment risk. However, low checking and savings balances unnecessarily result from poor financial status because customers may prioritize alternative investments or prefer using cash. Therefore, other factors need to be assessed to have a better understanding. 
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/5fabef42-ad86-46d5-9e5f-b86550e9b294" alt="Centered Image">
+</p>
+
+## Relationship with purpose
+“Radio/TV”, “furniture/equipment”, “domestic appliances", and "repairs" observations are grouped into the “household” observation to facilitate the data visualization and interpretation. Household, car and business groups are dominant purposes of the dataset. Car and business purposes have a high proportion of outliers in the total credit amount, which spread widely from short to long-term duration. 
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/60ac5ba0-aa3e-450d-b3ae-fdc2b95143e4" alt="Centered Image">
+</p>
+
+Car and business outlier loans were given to customers with low account balances (Figure). There are two possible reasons behind these findings: this bank had poor risk assessment, or it prioritized using job and housing status to offer loans.
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/1e084301-96b1-43d4-bbb6-1f3befce0ad2" alt="Centered Image">
+</p>
+
+## Relationship with job status
+The figure indicates that the bank primarily offered higher-value, longer-term loans to customers with high-skilled jobs. High-skilled workers tended to receive higher salaries and have better job security, suggesting a strong and stable cash flow.
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/7cfa648e-6192-4b05-a366-eee95506ae41" alt="Centered Image">
+</p>
+
+Noticeably, most outlier loans were borrowed by customers belonging to this group. All purposes share a similar pattern in the distributions of outliers which indicates a clear loan policy giving large loans to low-risk customers. This marks the focus on repayment ability over account balances.
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/93166f2a-8ac8-4e47-9afe-046ba4e2d362" alt="Centered Image">
+</p>
+
+## Relationship with housing status
+Overall, most loans were granted to customers with house ownership. Bars’ magnitude indicates that homeowners could receive urgent and high-value loans secured by real estate ownership. Thus, the bank’s policy might favor homeowners, who had good housing stability and more disposable income, to minimize the loans’ default risks. 
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/802c02ea-4b32-4489-b5eb-fe4bd3c9c30b" alt="Centered Image">
+</p>
+
+The extreme consumer debts from household and vacation purposes may indicate poor financial planning among these customers. Further, business loans are associated with risks of poor business performance affecting repayment ability. Therefore, the bank needed valuable collateral assets to mitigate the inherent risks of poor financial management. Regarding car loan outliers, customers were primarily non-renter from the “own” and “free” housing groups. Although car loans outliers were high value, posing repayment risk, customers having a free house were still granted high-value loans. The finding is explainable because loans are usually secured by the car itself (Figure). Therefore, lending to non-renters appeared to be safe due to their low monthly expenses, guaranteeing loan repayment. 
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/37994493-7907-49cd-8f75-385a8ae0ecf7" alt="Centered Image">
+</p>
+
+# Conclusion
+The analysis highlights the bank's comprehensive lending strategies which involved through customer evaluation and lending conditions. The extremely high-value loans reflected a strategic lending approach rather than being indicators of fraud or poor evaluation. High credit amount loans were usually tied with longer duration to ensure the customers' repayment abilities. Although the presence of extremely high-value loans, the portfolio had a low-to-moderate risk thanks to a comprehensive risk evaluation. The loan policy was clear that income level, housing security and purposes were important factors to decide the loans’ values, duration and purposes. Although thge majority of the portfolio was accounted by customers who had low account balance, they were high-skilled and owning a house. It may indicate a preference of using cash, which was suitable to the 1990s context of the dataset. Further, these high-skilled customers might prefer altertive investing instead of depositing money into their savings account. While house ownership was a must-have in high-value consumption loans, it was a nice-to-have in car loans because the cars themselves were collateral assets. This approach might help the banks secure its loan portfolio by leveraging collateral and assessing customers’ profiles carefully.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
