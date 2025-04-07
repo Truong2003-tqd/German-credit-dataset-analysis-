@@ -282,6 +282,7 @@ The result returns no missing value after processing. After the imputation, the 
 
 **3. Handle outliers**
 View the detailed code here: [3. Handle outliers .R](https://github.com/Truong2003-tqd/German-credit-dataset-analysis-/blob/b1193f0af6fcd62254d03599ad867a881707705b/3.%20Handle%20outliers%20.R)
+
 Due to the left-skewed distributions of credit amount, duration and age, using the boxplot is the best way to detect outliers.
 <p align="center">
   <img src="https://github.com/user-attachments/assets/d6f1edea-4683-47f9-8e8f-b4e5c6dd21f0" alt="Credit Category Distribution" width="600">
