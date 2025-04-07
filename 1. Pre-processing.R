@@ -1,11 +1,5 @@
-#Import data 
-library(readr)
-German_Credit_Dataset <- read_csv("German Credit Dataset.csv", 
-                                      na = "NA")
-#View the data
-View(German_Credit_Dataset)
-
 #Open libraries
+library(readr)
 library(tidyverse)
 library(naniar)
 library(gtExtras)
@@ -16,12 +10,16 @@ library(VIM)
 library(corrplot)
 library(ggplot2)
 
+#Import data 
+German_Credit_Dataset <- read_csv("German Credit Dataset.csv", 
+                                      na = "NA")
+#View the data
+View(German_Credit_Dataset)
+
 
 #Skim through the data
 skim(German_Credit_Dataset) 
 
-#Check the number of duplicated values
-sum(duplicated(German_Credit_Dataset)) 
 
 #Create a new data frame of the dataset with unique "id"
 df <- German_Credit_Dataset %>% 
@@ -40,29 +38,6 @@ df <- df %>%
 
 #View the data
 View(df)
-
-#Convert into categorical variables
-df$sex <- factor (df$sex, levels = c("male", "female"))
-df$job <- as.factor(df$job)
-df$housing <- factor (df$housing, levels = c("own", "rent","free"))
-df$saving_accounts <- factor (df$saving_accounts, levels = c("little","moderate","quite rich","rich"))
-df$checking_account <- factor (df$checking_account, levels = c("little","moderate","rich"))
-unique(df$checking_account)
-df$purpose <- as.factor(df$purpose)
-
-#Summary the dataset
-summary(df)
-
-#Summary missing values
-df %>% 
-  miss_var_summary(.) 
-
-#Visualize missing values
-gg_miss_var(df) +
-  theme_bw()+
-  labs(title = "Missing Values in Dataset", 
-       x = "Variables", 
-       y = "Number of Missing Values")
 
 #Create age category 
 age_interval <- c(18,24,34,59,100) #Create age intervals
@@ -91,6 +66,29 @@ df <- df %>%
 #Rearrange column
 df <- df %>% 
   select(id, age, age_cat, duration, duration_cat, credit_amount, credit_cat, everything()) 
+
+#Convert into categorical variables
+df$sex <- factor (df$sex, levels = c("male", "female"))
+df$job <- as.factor(df$job)
+df$housing <- factor (df$housing, levels = c("own", "free","rent"))
+df$saving_accounts <- factor (df$saving_accounts, levels = c("little","moderate","quite rich","rich"))
+df$checking_account <- factor (df$checking_account, levels = c("little","moderate","rich"))
+df$purpose <- as.factor(df$purpose)
+
+#Summary table of missing values
+df %>% 
+  miss_var_summary() %>% 
+  rename("Number of Missing" = n_miss,
+         "Percentage of Missing" = pct_miss) %>% 
+  rename_with(~str_to_title(.)) %>% 
+  gt() %>% 
+  tab_header(title = "Summary Table of Missing Values") %>% 
+  gt_theme_guardian() 
+
+#Replace the missing value by kNN method 
+df1 <- df %>% 
+  kNN(variable = c("saving_accounts", "checking_account"),
+      k = 7)
 
 #Skim through the data after processing
 skim(df1)
