@@ -35,7 +35,7 @@ Rstudio is the backbone of my analysis. I used following packages to analyze the
 9. ggplot2: Creates customizable and elegant data visualizations.
 
 # Data Preparation and Wrangling
-This section outline steps taken to prepare and clean the data to ensure high accuracy and usability. View my code with detailed steps here: [1. Pre-processing.R](https://github.com/Truong2003-tqd/German-credit-dataset-analysis-/blob/main/1.%20Pre-processing.R)
+This section outline steps taken to prepare and clean the data to ensure high accuracy and usability. View my code with detailed steps here: [1. Pre-processing.R](https://github.com/Truong2003-tqd/German-credit-dataset-analysis-/blob/4011ed4459def0bc822990ee4412a1bfa968dc04/1.%20Pre-processing.R)
 
 ## Import & Clean Up Data
 I start by importing need packages and loading the csv dataset file, followed by detecting and handling missing values and outliers. 
@@ -165,7 +165,7 @@ The table below describe the new columns after processing
 **Table.** New category table 
 
 ### Data Cleaning
-View the detailed code here: [2. Missing values handling.R](https://github.com/Truong2003-tqd/German-credit-dataset-analysis-/blob/main/2.%20Missing%20values%20handling.R), [3. Handle outliers .R](https://github.com/Truong2003-tqd/German-credit-dataset-analysis-/blob/main/3.%20Handle%20outliers%20.R)
+View the detailed code here: [2. Missing values handling.R](https://github.com/Truong2003-tqd/German-credit-dataset-analysis-/blob/4011ed4459def0bc822990ee4412a1bfa968dc04/2.%20Missing%20values%20handling.R)
 
 **1. Skim through the data**
 ```
