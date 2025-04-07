@@ -122,15 +122,10 @@ combine_housing <- grid.arrange(plot7, plot8, ncol = 1,
                                 top = textGrob("Credit Category Distribution by Housing Catergory: Missing vs. Non-Missing Values",
                                                gp = gpar(fontsize = 12, fontface = "bold", col = "#0F4761")))
 }
-#Replace the missing value by kNN method 
-{df1 <- df %>% 
-    kNN(variable = c("saving_accounts", "checking_account"),
-        k = 7)}
-#Skim through the data after processing
-skim(df1)
+
 #Credit Category Distribution by Checking Account Status: Before and After Imputation
 {
-before_imputation_by_checking_account <- 
+#before_imputation_by_checking_account <- 
   ggplot(df, aes(x = checking_account,y = credit_amount)) + 
   geom_boxplot(fill = "#0F4761", alpha = 0.7,
                outlier.colour =  "#0F4761",
