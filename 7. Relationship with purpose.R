@@ -58,6 +58,7 @@ savings_distribution_across_purpose <- df1 %>%
 combine_checking_and_savings_distribution <- 
   grid.arrange(checking_distribution_across_purpose ,savings_distribution_across_purpose,ncol = 2,
                top = textGrob("Distribution of Checking and Savings Account Statuses across Purposes",
-                              gp = gpar(fontsize = 12, fontface = "bold", col = "#0F4761")))
+                              gp = gpar(fontsize = 14, fontface = "bold", col = "#0F4761")))
 }
+
 
