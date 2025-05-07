@@ -438,8 +438,8 @@ The analysis reveals insightful findings of the bank’s lending and risk evalua
 Because of the high unemployment rate after reunification, the bank attempted to boost household consumption and entrepreneurship with flexible approaches.  However, the lending policy for household, business and vacation appeared to depend on the perceived customer stability, emphasizing a quantitative approach for creditworthiness assessment. Therefore, a more transparent and quantifiable credit assessment should be adopted to mitigate default risks.
 
 # Conclusion
-All questions were answered after analyzing the full dataset and the identified outliers. While statistical measurements are weak and inconclusive, analyzing the outliers’ patterns reveals the lending decisions based on the evaluation of job and housing status. Given the socio-economic context, the flexible lending approach was appropriate to provide Germans with financial support. However, the bank should adopt a more structured and transparent loan assessment process to mitigate the default risk. 
 
+Although statistical measurements are weak and inconclusive, analyzing the outliers who unexpectedly received loans, reveals the lending decisions that focused the evaluation of either job quality or housing statbility rather than bank account balance. The flexibility in lending strategy resulted from the period of economic instability after the German reunification which triggered a spike in the unemployment rate and an economic downturn. In this context, the loose lending policy might have aim to boost economic growth by increasing household consumption and fostering entrepreneurship. 
 
 
 
