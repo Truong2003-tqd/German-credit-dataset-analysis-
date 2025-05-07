@@ -440,9 +440,7 @@ Because of the high unemployment rate after reunification, the bank attempted to
 # Conclusion
 All questions were answered after analyzing the full dataset and the identified outliers. While statistical measurements are weak and inconclusive, analyzing the outliers’ patterns reveals the lending decisions based on the evaluation of job and housing status. Given the socio-economic context, the flexible lending approach was appropriate to provide Germans with financial support. However, the bank should adopt a more structured and transparent loan assessment process to mitigate the default risk. 
 
-# Recommendation
-1)	The evaluation should integrate multiple factors to determine borrower reliability with higher accuracy. Although the dual-path approach was helpful to boost the economy, relying on a single metric to assess a customer does not fully reflect financial health. A holistic approach involves.
-2)	A scoring system that encodes risk factors into quantifiable variables should be adopted to evaluate their contribution weights to customers’ risk profiles. Consequently, the bank can set credit intervals for each range of risk scores, thereby granting suitable loan values to certain customers.
+
 
 
 
